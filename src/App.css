@@ -1,0 +1,68 @@
+body {
+	font-family: 'Roboto Condensed', sans-serif;
+
+	/*
+		Avoid scroll jumping upon content changes
+	*/
+	overflow-y: scroll;
+
+	display: flex;
+	justify-content: center;
+}
+
+.main {
+	width: 400px;
+	justify-content: center;
+}
+	.search-form {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: nowrap;
+		justify-content: flex-start;
+		align-content: stretch;
+		align-items: flex-start;
+
+		margin: 30px 10px;
+	}
+		.venue-search-input {
+			flex: 1 1 auto;
+
+			height: 40px;
+			box-sizing: border-box;
+			padding: 0 15px;
+			border: 1px solid #AAA;
+			border-radius: 5px;
+		}
+		.venue-search-submit {
+			height: 40px;
+			box-sizing: border-box;
+			margin-left: 10px;
+		}
+
+	.venue-list {
+		font-size: 18px;
+	}
+		.venue-item {
+			margin: 10px;
+			padding: 10px;
+			border: 1px solid #CCC;
+			border-radius: 5px;
+			text-align: center;
+			background: #fdfdfd;
+		}
+			.venue-item-name {
+				font-weight: bold;
+			}
+			.venue-item-distance {
+				color: #999;
+			}
+			.venue-item-address {
+				color: #000;
+			}
+
+	.empty-list-warning {
+		text-align: center;
+	}
+	.loading-list {
+		text-align: center;
+	}
