@@ -12,14 +12,20 @@ class App extends Component {
 		this.state = {
 			venues: [],
 			isEmpty: false,
-			isBusy: false
+			isBusy: false,
+			isGeolocationBlocked: false
 		};
 	}
 
-	getLocation(callback) {
-		navigator.geolocation.getCurrentPosition(function(location) {
-			callback(location.coords.latitude + ',' + location.coords.longitude)
-		})
+	getLocation(success, fail) {
+		navigator.geolocation.getCurrentPosition(
+			function(location) {
+				success(location.coords.latitude + ',' + location.coords.longitude)
+			},
+			function(error){
+				fail(error);
+			}
+		)
 	}
 
 	handleSubmit(query) {
@@ -39,7 +45,7 @@ class App extends Component {
 				ll: latlong
 			};
 
-			setVenueState({venues: [], isBusy: true});
+			setVenueState({venues: [], isGeolocationBlocked: false, isBusy: true});
 
 			fetch(venuesEndpoint + new URLSearchParams(params), {
 				method: 'GET'
@@ -51,8 +57,12 @@ class App extends Component {
 				});
 			}).catch(function(error) {
 				setVenueState({isBusy: false});
-				console.log('Request failed', error)
+				console.error('Request failed', error);
 			});
+		},
+		function(error){
+			setVenueState({isGeolocationBlocked: true});
+			console.error('Geolocation unavailable', error);
 		});
 	}
 
@@ -62,7 +72,12 @@ class App extends Component {
 
 	render() {
 		let venueList;
-		if(this.state.isBusy) {
+		if(this.state.isGeolocationBlocked) {
+			venueList = <div className="empty-list-warning">
+				Geolocation is unavailable.<br/>
+				Please try to geolocate yourself better.
+			</div>
+		} else if(this.state.isBusy) {
 			venueList = <div className="loading-list">
 				<img src="../ripple.svg" alt="Loading" />
 			</div>
